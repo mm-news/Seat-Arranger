@@ -5,7 +5,7 @@ how to make the best arrangement of the seats in a classroom, so no student will
 
 ## TODOS
 
-- [ ] Design a simple layout for the site
+- [x] Design a simple layout for the site
 - [ ] Let user set the number of students
 - [ ] Let user customize the students' preferences
 - [ ] Check available seats for a student and show the result
