@@ -1,7 +1,16 @@
+// Setup
+
 document.getElementById("set-room-size-btn").addEventListener("click", update_room)
 document.getElementById("room-row").setAttribute("value", 6)
 document.getElementById("room-col").setAttribute("value", 5)
+document.getElementById("students-count").setAttribute("value", 3)
+
+var student_list = []
+
 update_room()
+
+
+// Room
 
 /**
  * Updates the room layout based on the event triggered.
