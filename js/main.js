@@ -7,9 +7,6 @@ document.getElementById("students-count").setAttribute("value", 3)
 
 var student_list = []
 
-update_room()
-
-
 // Room
 
 /**
@@ -48,6 +45,9 @@ function update_room(event) {
 
     document.getElementById("arranging-area").innerHTML = new_arranging_area.innerHTML
 }
+
+
+update_room()
 
 // Students
 
