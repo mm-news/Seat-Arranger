@@ -23,19 +23,19 @@ function update_room(event) {
     let cols = parseInt(document.getElementById("room-col").value)
 
     // Create a table element
-    let table = document.getElementById("arranging-area")
+    let new_arranging_area = document.getElementById("arranging-area")
 
     // Populate the table with rows and columns
     for (let i = 0; i < rows; i++) {
-        const tr = document.createElement("tr")
+        const r = document.createElement("div")
+        r.classList.add("row")
         for (let j = 0; j < cols; j++) {
-            const td = document.createElement("td")
-            td.classList.add("card-cell") // Add class for styling
-            tr.appendChild(td)
+            const c = document.createElement("div")
+            c.classList.add("card-cell", "col")
+            r.appendChild(c)
         }
-        table.appendChild(tr)
+        new_arranging_area.appendChild(r)
     }
 
-    // Append the table to the arranging area
-    document.getElementById("arranging-area") = table
+    document.getElementById("arranging-area").innerHTML = new_arranging_area.innerHTML
 }
