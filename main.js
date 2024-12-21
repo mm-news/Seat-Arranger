@@ -1,4 +1,6 @@
 document.getElementById("set-room-size-btn").addEventListener("click", update_room)
+document.getElementById("room-row").setAttribute("value", 6)
+document.getElementById("room-col").setAttribute("value", 5)
 update_room()
 
 /**
@@ -13,18 +15,27 @@ function update_room(event) {
             return
         }
     }
-    document.getElementById("arranging-area").innerHTML = "" // FIXME
-    alert()
+    document.getElementById("arranging-area").innerHTML = "" // Clear the arranging area
     console.log("Recreating table")
-    let r = document.getElementById("room-row").getAttribute("value")
-    let c = document.getElementById("room-col").getAttribute("value")
-    let new_table = ""
-    for (let i = 0; i < r; i++) {
-        new_table += '<tr>'
-        for (let j = 0; j < c; j++) {
-            new_table += '<td></td>'
+
+    // Get the number of rows and columns from the input boxes
+    let rows = parseInt(document.getElementById("room-row").value)
+    let cols = parseInt(document.getElementById("room-col").value)
+
+    // Create a table element
+    let table = document.getElementById("arranging-area")
+
+    // Populate the table with rows and columns
+    for (let i = 0; i < rows; i++) {
+        const tr = document.createElement("tr")
+        for (let j = 0; j < cols; j++) {
+            const td = document.createElement("td")
+            td.classList.add("card-cell") // Add class for styling
+            tr.appendChild(td)
         }
-        new_table += "</tr>"
+        table.appendChild(tr)
     }
-    document.getElementById("arranging-area").innerHTML = new_table
+
+    // Append the table to the arranging area
+    document.getElementById("arranging-area") = table
 }
