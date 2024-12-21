@@ -70,7 +70,8 @@ class Student {
 
     get card() {
         let card = document.createElement("div")
-        card.classList.add("card")
+        card.classList.add("card", "vh-30")
+        card.setAttribute("id", "student-" + this.id)
 
         let card_body = document.createElement("div")
         card_body.classList.add("card-body")

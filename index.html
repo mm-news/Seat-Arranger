@@ -27,6 +27,11 @@
             margin: 5px;
             background-color: #8d9cac90;
         }
+
+        #students-list {
+            max-height: 50vh;
+            overflow-x: auto;
+        }
     </style>
     <title>Seat Arranger</title>
 </head>
@@ -46,11 +51,10 @@
                         role="button">Set</a>
                 </div>
             </div>
-            <div class="col-4 min-vh-100">
-                <div class="d-flex flex-column h-100">
-                    <div class="row flex-grow-1">
-                        <h2>Student List</h2>
-                        <div id="student-list" class="row">
+            <div class="col-4 min-vh-100 d-flex flex-column h-100">
+                <div class="row">
+                    <h2>Students List</h2>
+                    <div id="students-list"> <!--TODO: Stack them horizontally instead of vertically-->
                         </div>
                     </div>
                     <div id="set-students-count" style="align-self: flex-end;">
@@ -62,7 +66,6 @@
                         </div>
                         <div class="col">
                             <h3>(Student info here)</h3>
-                        </div>
                     </div>
                 </div>
             </div>
