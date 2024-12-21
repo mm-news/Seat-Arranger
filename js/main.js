@@ -1,9 +1,16 @@
 // Setup
 
 document.getElementById("set-room-size-btn").addEventListener("click", update_room)
+document.getElementById("set-students-count-btn").addEventListener("click", () => {
+    let current_count = student_list.length
+    for (let i = 0; i < parseInt(document.getElementById("students-count").value); i++) {
+        add_student(current_count + i + 1)
+    }
+})
+
 document.getElementById("room-row").setAttribute("value", 6)
 document.getElementById("room-col").setAttribute("value", 5)
-document.getElementById("students-count").setAttribute("value", 3)
+document.getElementById("students-count").setAttribute("value", 5)
 
 var student_list = []
 
@@ -98,5 +105,19 @@ class Student {
 
         card.appendChild(card_body)
         return card
+    }
+}
+
+function add_student(id) {
+    let student = new Student(id, -1, -1, [], [])
+    student_list.push(student)
+    document.getElementById("students-list").appendChild(student.card)
+}
+
+function remove_student(id) {
+    let student = student_list.find(s => s.id == id)
+    if (student) {
+        student_list = student_list.filter(s => s.id != id)
+        document.getElementById("student-" + id).remove()
     }
 }
