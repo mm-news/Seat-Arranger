@@ -79,6 +79,7 @@ class Student {
         let card = document.createElement("div")
         card.classList.add("card", "vh-30")
         card.setAttribute("id", "student-" + this.id)
+        card.addEventListener("click", () => show_student_preferences(this.id))
 
         let card_body = document.createElement("div")
         card_body.classList.add("card-body")
@@ -119,5 +120,60 @@ function remove_student(id) {
     if (student) {
         student_list = student_list.filter(s => s.id != id)
         document.getElementById("student-" + id).remove()
+    }
+}
+
+function show_student_preferences(id) {
+    let student = student_list.find(s => s.id == id)
+    if (student) {
+        let info_box = document.getElementById("student-info") // TODO: Set the class of the student `bg-primary`
+        info_box.innerHTML = ""
+
+        let cardbody = document.createElement("div")
+        cardbody.classList.add("card-body")
+
+        let title = document.createElement("h5")
+        title.classList.add("card-title")
+        title.textContent = "Student #" + student.id
+
+        let set_avoid = document.createElement("select") // TODO: Add a label
+        set_avoid.classList.add("form-select")
+        set_avoid.setAttribute("multiple", "")
+        set_avoid.setAttribute("id", "set-avoid")
+
+        student_list.forEach(s => {
+            let option = document.createElement("option")
+            option.setAttribute("value", s.id)
+            option.textContent = "Student #" + s.id
+            if (student.avoid.includes(s.id)) {
+                option.setAttribute("selected", "")
+            }
+            set_avoid.appendChild(option)
+        })
+
+        let set_avoid_plus = document.createElement("select")
+        set_avoid_plus.classList.add("form-select")
+        set_avoid_plus.setAttribute("multiple", "")
+        set_avoid_plus.setAttribute("id", "set-avoid-plus")
+
+        student_list.forEach(s => {
+            let option = document.createElement("option")
+            option.setAttribute("value", s.id)
+            option.textContent = "Student #" + s.id
+            if (student.avoid_plus.includes(s.id)) {
+                option.setAttribute("selected", "")
+            }
+            set_avoid_plus.appendChild(option)
+        }) // TODO: use checkboxes instead
+
+        let save_button = document.createElement("button")
+        save_button.classList.add("btn", "btn-primary")
+        save_button.textContent = "Save"
+
+        cardbody.appendChild(title)
+        cardbody.appendChild(set_avoid)
+        cardbody.appendChild(set_avoid_plus)
+        cardbody.appendChild(save_button)
+        info_box.appendChild(cardbody)
     }
 }
