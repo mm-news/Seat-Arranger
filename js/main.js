@@ -12,6 +12,7 @@ document.getElementById("room-row").setAttribute("value", 6)
 document.getElementById("room-col").setAttribute("value", 5)
 document.getElementById("students-count").setAttribute("value", 5)
 
+/** @type {Array<Student>} */
 var student_list = []
 
 // Room
