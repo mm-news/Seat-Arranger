@@ -156,20 +156,19 @@ function show_student_preferences(id) {
  */
 function generate_student_avoid_form(student) {
 
-    let set_avoid = document.createElement("div")
+    let set_avoid = document.createElement("table")
     set_avoid.setAttribute("id", "set-avoid")
+    set_avoid.classList.add("table")
+    set_avoid.appendChild(get_thead_4_avoid())
+
+    let table_body = document.createElement("tbody")
 
     student_list.forEach(s => {
         if (s.id == student.id) {
             return
         }
-        let checkbox_row = document.createElement("div")
+        let checkbox_row = document.createElement("tr")
         checkbox_row.setAttribute("id", "avoid-student-" + s.id)
-
-        let student_label = document.createElement("label")
-        student_label.setAttribute("for", "avoid-student-" + s.id)
-        student_label.classList.add("form-check-label")
-        student_label.textContent = "#" + s.id
 
         let student_avoid_checkbox = document.createElement("input") // TODO: onclick event
         student_avoid_checkbox.setAttribute("type", "checkbox")
@@ -189,20 +188,36 @@ function generate_student_avoid_form(student) {
             student_avoid_plus_checkbox.setAttribute("checked", "")
         } // TODO: simplify this
 
-        let checkbox_4_avoid = document.createElement("div")
-        checkbox_4_avoid.classList.add("form-check-inline")
+        let th = document.createElement("th")
+        th.setAttribute("scope", "row")
+        th.textContent = "#" + s.id
 
-        let checkbox_4_avoid_plus = document.createElement("div")
-        checkbox_4_avoid_plus.classList.add("form-check-inline")
+        let td_avoid = document.createElement("td")
+        td_avoid.appendChild(student_avoid_checkbox)
 
-        checkbox_4_avoid.appendChild(student_label)
-        checkbox_4_avoid.appendChild(student_avoid_checkbox)
-        checkbox_4_avoid_plus.appendChild(student_avoid_plus_checkbox) // TODO: make them a table so it's easier to read
+        let td_avoid_plus = document.createElement("td")
+        td_avoid_plus.appendChild(student_avoid_plus_checkbox)
 
-        checkbox_row.appendChild(checkbox_4_avoid)
-        checkbox_row.appendChild(checkbox_4_avoid_plus)
+        checkbox_row.appendChild(th)
+        checkbox_row.appendChild(td_avoid)
+        checkbox_row.appendChild(td_avoid_plus)
 
-        set_avoid.appendChild(checkbox_row)
+        table_body.appendChild(checkbox_row)
+        set_avoid.appendChild(table_body)
     })
     return set_avoid
+}
+
+function get_thead_4_avoid() {
+    let thead = document.createElement("thead")
+    let tr = document.createElement("tr")
+    let titles = ["Id", "Avoid+", "Avoid#"]
+    titles.forEach(text => {
+        let th = document.createElement("th")
+        th.setAttribute("scope", "col")
+        th.textContent = text
+        tr.appendChild(th)
+    })
+    thead.appendChild(tr)
+    return thead
 }
