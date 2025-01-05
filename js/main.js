@@ -137,44 +137,72 @@ function show_student_preferences(id) {
         title.classList.add("card-title")
         title.textContent = "Student #" + student.id
 
-        let set_avoid = document.createElement("select") // TODO: Add a label
-        set_avoid.classList.add("form-select")
-        set_avoid.setAttribute("multiple", "")
-        set_avoid.setAttribute("id", "set-avoid")
-
-        student_list.forEach(s => {
-            let option = document.createElement("option")
-            option.setAttribute("value", s.id)
-            option.textContent = "Student #" + s.id
-            if (student.avoid.includes(s.id)) {
-                option.setAttribute("selected", "")
-            }
-            set_avoid.appendChild(option)
-        })
-
-        let set_avoid_plus = document.createElement("select")
-        set_avoid_plus.classList.add("form-select")
-        set_avoid_plus.setAttribute("multiple", "")
-        set_avoid_plus.setAttribute("id", "set-avoid-plus")
-
-        student_list.forEach(s => {
-            let option = document.createElement("option")
-            option.setAttribute("value", s.id)
-            option.textContent = "Student #" + s.id
-            if (student.avoid_plus.includes(s.id)) {
-                option.setAttribute("selected", "")
-            }
-            set_avoid_plus.appendChild(option)
-        }) // TODO: use checkboxes instead
+        let configure_avoid = generate_student_avoid_form(student)
 
         let save_button = document.createElement("button")
         save_button.classList.add("btn", "btn-primary")
         save_button.textContent = "Save"
 
         cardbody.appendChild(title)
-        cardbody.appendChild(set_avoid)
-        cardbody.appendChild(set_avoid_plus)
+        cardbody.appendChild(configure_avoid)
         cardbody.appendChild(save_button)
         info_box.appendChild(cardbody)
     }
+}
+
+/**
+ * Generate a form to set the avoid list for a student.
+ * @param {Student} student_id the ID of the student to generate the form for
+ */
+function generate_student_avoid_form(student) {
+
+    let set_avoid = document.createElement("div")
+    set_avoid.setAttribute("id", "set-avoid")
+
+    student_list.forEach(s => {
+        if (s.id == student.id) {
+            return
+        }
+        let checkbox_row = document.createElement("div")
+        checkbox_row.setAttribute("id", "avoid-student-" + s.id)
+
+        let student_label = document.createElement("label")
+        student_label.setAttribute("for", "avoid-student-" + s.id)
+        student_label.classList.add("form-check-label")
+        student_label.textContent = "#" + s.id
+
+        let student_avoid_checkbox = document.createElement("input") // TODO: onclick event
+        student_avoid_checkbox.setAttribute("type", "checkbox")
+        student_avoid_checkbox.setAttribute("id", "avoid-student-" + s.id)
+        student_avoid_checkbox.classList.add("form-check-input")
+
+        if (student.avoid.includes(s.id)) {
+            student_avoid_checkbox.setAttribute("checked", "")
+        }
+
+        let student_avoid_plus_checkbox = document.createElement("input")
+        student_avoid_plus_checkbox.setAttribute("type", "checkbox")
+        student_avoid_plus_checkbox.setAttribute("id", "avoid-plus-student-" + s.id)
+        student_avoid_plus_checkbox.classList.add("form-check-input")
+
+        if (student.avoid_plus.includes(s.id)) {
+            student_avoid_plus_checkbox.setAttribute("checked", "")
+        } // TODO: simplify this
+
+        let checkbox_4_avoid = document.createElement("div")
+        checkbox_4_avoid.classList.add("form-check-inline")
+
+        let checkbox_4_avoid_plus = document.createElement("div")
+        checkbox_4_avoid_plus.classList.add("form-check-inline")
+
+        checkbox_4_avoid.appendChild(student_label)
+        checkbox_4_avoid.appendChild(student_avoid_checkbox)
+        checkbox_4_avoid_plus.appendChild(student_avoid_plus_checkbox) // TODO: make them a table so it's easier to read
+
+        checkbox_row.appendChild(checkbox_4_avoid)
+        checkbox_row.appendChild(checkbox_4_avoid_plus)
+
+        set_avoid.appendChild(checkbox_row)
+    })
+    return set_avoid
 }
