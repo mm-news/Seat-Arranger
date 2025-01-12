@@ -168,12 +168,13 @@ function generate_student_avoid_form(student) {
             return
         }
         let checkbox_row = document.createElement("tr")
-        checkbox_row.setAttribute("id", "avoid-student-" + s.id)
+        checkbox_row.setAttribute("id", "avoid-student-row-" + s.id)
 
-        let student_avoid_checkbox = document.createElement("input") // TODO: onclick event
+        let student_avoid_checkbox = document.createElement("input")
         student_avoid_checkbox.setAttribute("type", "checkbox")
         student_avoid_checkbox.setAttribute("id", "avoid-student-" + s.id)
         student_avoid_checkbox.classList.add("form-check-input")
+
         // Uncheck the avoid plus checkbox when it's checked
         student_avoid_checkbox.addEventListener("click", (e) => {
             if (e.target.checked) {
@@ -189,6 +190,7 @@ function generate_student_avoid_form(student) {
         student_avoid_plus_checkbox.setAttribute("type", "checkbox")
         student_avoid_plus_checkbox.setAttribute("id", "avoid-plus-student-" + s.id)
         student_avoid_plus_checkbox.classList.add("form-check-input")
+
         // Uncheck the avoid checkbox when it's checked
         student_avoid_plus_checkbox.addEventListener("click", (e) => {
             if (e.target.checked) {
