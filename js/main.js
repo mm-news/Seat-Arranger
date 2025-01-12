@@ -142,6 +142,23 @@ function show_student_preferences(id) {
         let save_button = document.createElement("button")
         save_button.classList.add("btn", "btn-primary")
         save_button.textContent = "Save"
+        save_button.addEventListener("click", (e) => {
+            let avoid = []
+            let avoid_plus = []
+            student_list.forEach(s => {
+                if (s.id == student.id) {
+                    return
+                }
+                if (document.getElementById("avoid-student-" + s.id).checked) {
+                    avoid.push(s.id)
+                }
+                if (document.getElementById("avoid-plus-student-" + s.id).checked) {
+                    avoid_plus.push(s.id)
+                }
+            })
+            student.avoid = avoid
+            student.avoid_plus = avoid_plus
+        })
 
         cardbody.appendChild(title)
         cardbody.appendChild(configure_avoid)
