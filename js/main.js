@@ -116,6 +116,7 @@ function add_student(id) {
     flush_student_cards()
 }
 
+// TODO: Add a remove student button
 function remove_student(id) {
     let student = student_list.find(s => s.id == id)
     if (student) {
@@ -175,6 +176,8 @@ function show_student_preferences(id) {
         cardbody.appendChild(configure_avoid)
         cardbody.appendChild(save_button)
         info_box.appendChild(cardbody)
+    } else {
+        console.error("Student not found: ", id)
     }
 }
 
