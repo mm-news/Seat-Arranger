@@ -113,7 +113,7 @@ class Student {
 function add_student(id) {
     let student = new Student(id, -1, -1, [], [])
     student_list.push(student)
-    document.getElementById("students-list").appendChild(student.card)
+    flush_student_cards()
 }
 
 function remove_student(id) {
@@ -123,6 +123,15 @@ function remove_student(id) {
         document.getElementById("student-" + id).remove()
     }
 }
+
+function flush_student_cards() {
+    document.getElementById("students-list").innerHTML = ""
+    student_list.forEach(s => {
+        document.getElementById("students-list").appendChild(s.card)
+    })
+}
+
+// Students Info
 
 function show_student_preferences(id) {
     let student = student_list.find(s => s.id == id)
@@ -158,6 +167,8 @@ function show_student_preferences(id) {
             })
             student.avoid = avoid
             student.avoid_plus = avoid_plus
+            console.log("Updated student: ", student)
+            flush_student_cards()
         })
 
         cardbody.appendChild(title)
