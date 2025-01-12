@@ -266,3 +266,5 @@ function get_thead_4_avoid() {
     thead.appendChild(tr)
     return thead
 }
+
+// Drag and Drop
