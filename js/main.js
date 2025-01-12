@@ -194,7 +194,7 @@ function generate_student_avoid_form(student) {
         // Uncheck the avoid checkbox when it's checked
         student_avoid_plus_checkbox.addEventListener("click", (e) => {
             if (e.target.checked) {
-                document.getElementById("avoid-student-" + s.id).checked = false // FIXME: This is not working
+                document.getElementById("avoid-student-" + s.id).checked = false
             }
         })
 
