@@ -13,3 +13,4 @@ how to make the best arrangement of the seats in a classroom, so no student will
 - [ ] Check available seats for a student and show the result
 - [ ] Spread the javascript code into multiple files
 - [ ] Make the site responsive
+- [ ] Using data attribute and `onevent(this)` to simplify the code
