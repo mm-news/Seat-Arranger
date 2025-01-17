@@ -80,7 +80,9 @@ class Student {
         let card = document.createElement("div")
         card.classList.add("card", "vh-30")
         card.setAttribute("id", "student-" + this.id)
+        card.setAttribute("draggable", "true")
         card.addEventListener("click", () => show_student_preferences(this.id))
+        card.addEventListener("dragstart", student_card_dragstart_handler)
 
         let card_body = document.createElement("div")
         card_body.classList.add("card-body")
@@ -268,3 +270,53 @@ function get_thead_4_avoid() {
 }
 
 // Drag and Drop
+
+/**
+ * This is called when the drag event is triggered on the student card.
+ * @param {Event} ev the drag event.
+ */
+function student_card_dragstart_handler(ev) {
+    if (!ev.target.classList.contains("student-card")) {
+        return
+    }
+    console.log("drag start: ", ev.target.getAttribute("data-student-id"))
+
+    ev.dataTransfer.setData("text/plain", ev.target.getAttribute("data-student-id"))
+    ev.dataTransfer.dropEffect = "link"
+}
+
+function seat_card_dragover_handler(ev) {
+    ev.preventDefault()
+    ev.dataTransfer.dropEffect = "link"
+}
+
+/**
+ * The is called when the drop event is triggered on the seat card.
+ * @param {Event} ev the drop event
+ */
+function seat_card_drop_handler(ev) {
+    // TODO: limit the number of students in the same seat and the number of seats for each student
+    console.log("drop: ", ev.dataTransfer.getData("text/plain"))
+    console.log("target: ", ev.target.id)
+    ev.preventDefault()
+
+    let seat_card = document.getElementById(ev.target.id)
+    seat_card.setAttribute("data-student-id", ev.dataTransfer.getData("text/plain"))
+    seat_card.addEventListener("click", () => show_student_preferences(ev.dataTransfer.getData("text/plain")))
+    // TODO: Add event listener to show seat preferences
+    seat_card.appendChild(seat_card_content(ev.dataTransfer.getData("text/plain")))
+
+    // TODO: Reflet the change in the student object
+}
+
+/**
+ * Returns the content of the seat card.
+ * @param {Number} student_id the target student ID
+ * @returns {HTMLElement} the content of the seat card
+ */
+function seat_card_content(student_id) {
+    let title = document.createElement("h1")
+    title.textContent = student_id
+    title.classList.add("text-center", "center-text")
+    return title
+}
