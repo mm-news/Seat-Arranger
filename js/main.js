@@ -45,7 +45,12 @@ function update_room(event) {
         r.classList.add("row")
         for (let j = 0; j < cols; j++) {
             const c = document.createElement("div")
-            c.classList.add("card-cell", "col")
+            c.classList.add("card-cell", "col", "seat-card")
+            c.setAttribute("id", "seat-" + i + "-" + j)
+            c.setAttribute("data-seat-row", i)
+            c.setAttribute("data-seat-col", j)
+            c.setAttribute("ondragover", "seat_card_dragover_handler(event)") // Why not addEventListener?
+            c.setAttribute("ondrop", "seat_card_drop_handler(event)") // Because it doesn't work :)
             r.appendChild(c)
         }
         new_arranging_area.appendChild(r)
@@ -78,7 +83,8 @@ class Student {
 
     get card() {
         let card = document.createElement("div")
-        card.classList.add("card", "vh-30")
+        card.classList.add("card", "vh-30", "student-card")
+        card.setAttribute("data-student-id", this.id)
         card.setAttribute("id", "student-" + this.id)
         card.setAttribute("draggable", "true")
         card.addEventListener("click", () => show_student_preferences(this.id))
