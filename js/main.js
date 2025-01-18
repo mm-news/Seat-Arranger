@@ -40,10 +40,10 @@ function update_room(event) {
     let new_arranging_area = document.getElementById("arranging-area")
 
     // Populate the table with rows and columns
-    for (let i = 0; i < rows; i++) {
+    for (let i = 1; i <= rows; i++) {
         const r = document.createElement("div")
         r.classList.add("row")
-        for (let j = 0; j < cols; j++) {
+        for (let j = 1; j <= cols; j++) {
             const c = document.createElement("div")
             c.classList.add("card-cell", "col", "seat-card")
             c.setAttribute("id", "seat-" + i + "-" + j)
