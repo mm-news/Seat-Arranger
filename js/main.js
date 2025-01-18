@@ -68,8 +68,8 @@ class Student {
     /**
      * The class representing a student.
      * @param {Number} id The unique ID for the student. TODO: Change the type to string.
-     * @param {Number} r The row number of the student's seat; 0-indexed; -1 for unassigned.
-     * @param {Number} c The column number of the student's seat; 0-indexed; -1 for unassigned.
+     * @param {Number} r The row number of the student's seat; 1-indexed; -1 for unassigned.
+     * @param {Number} c The column number of the student's seat; 1-indexed; -1 for unassigned.
      * @param {Array<Number>} avoid The list of student IDs to avoid in the + area (4 seats).
      * @param {Array<Number>} avoid_plus The list of student IDs to avoid in the # area (8 seats).
      */
