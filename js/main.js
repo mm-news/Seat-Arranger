@@ -312,7 +312,12 @@ function seat_card_drop_handler(ev) {
     // TODO: Add event listener to show seat preferences
     seat_card.appendChild(seat_card_content(ev.dataTransfer.getData("text/plain")))
 
-    // TODO: Reflet the change in the student object
+    let student = student_list.find(s => s.id == ev.dataTransfer.getData("text/plain"))
+    if (student) {
+        student.r = parseInt(seat_card.getAttribute("data-seat-row"))
+        student.c = parseInt(seat_card.getAttribute("data-seat-col"))
+        flush_student_cards()
+    }
 }
 
 /**
