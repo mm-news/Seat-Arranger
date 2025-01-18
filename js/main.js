@@ -301,7 +301,7 @@ function seat_card_dragover_handler(ev) {
  * @param {Event} ev the drop event
  */
 function seat_card_drop_handler(ev) {
-    // TODO: limit the number of students in the same seat and the number of seats for each student
+    // TODO: limit the number of students in the same seat
     console.log("drop: ", ev.dataTransfer.getData("text/plain"))
     console.log("target: ", ev.target.id)
     ev.preventDefault()
@@ -309,17 +309,29 @@ function seat_card_drop_handler(ev) {
     let student_id = ev.dataTransfer.getData("text/plain")
     let seat_card = document.getElementById(ev.target.id)
 
+    let student = student_list.find(s => s.id == student_id)
+    if (!student) {
+        console.error("Student not found: ", student_id)
+        return
+    }
+
+    if (student.r > 0 && student.c > 0) {
+        let old_seat_card = document.getElementById("seat-" + student.r + "-" + student.c)
+        if (old_seat_card) {
+            old_seat_card.innerHTML = ""
+        } else {
+            console.error("Old seat card not found: ", student.r, student.c)
+        }
+    }
+
     seat_card.setAttribute("data-student-id", student_id)
     seat_card.addEventListener("click", () => show_student_preferences(student_id))
     // TODO: Add event listener to show seat preferences
     seat_card.appendChild(seat_card_content(student_id))
 
-    let student = student_list.find(s => s.id == student_id)
-    if (student) {
-        student.r = parseInt(seat_card.getAttribute("data-seat-row"))
-        student.c = parseInt(seat_card.getAttribute("data-seat-col"))
-        flush_student_cards()
-    }
+    student.r = parseInt(seat_card.getAttribute("data-seat-row"))
+    student.c = parseInt(seat_card.getAttribute("data-seat-col"))
+    flush_student_cards()
 }
 
 /**
