@@ -306,13 +306,15 @@ function seat_card_drop_handler(ev) {
     console.log("target: ", ev.target.id)
     ev.preventDefault()
 
+    let student_id = ev.dataTransfer.getData("text/plain")
     let seat_card = document.getElementById(ev.target.id)
-    seat_card.setAttribute("data-student-id", ev.dataTransfer.getData("text/plain"))
-    seat_card.addEventListener("click", () => show_student_preferences(ev.dataTransfer.getData("text/plain")))
-    // TODO: Add event listener to show seat preferences
-    seat_card.appendChild(seat_card_content(ev.dataTransfer.getData("text/plain")))
 
-    let student = student_list.find(s => s.id == ev.dataTransfer.getData("text/plain"))
+    seat_card.setAttribute("data-student-id", student_id)
+    seat_card.addEventListener("click", () => show_student_preferences(student_id))
+    // TODO: Add event listener to show seat preferences
+    seat_card.appendChild(seat_card_content(student_id))
+
+    let student = student_list.find(s => s.id == student_id)
     if (student) {
         student.r = parseInt(seat_card.getAttribute("data-seat-row"))
         student.c = parseInt(seat_card.getAttribute("data-seat-col"))
