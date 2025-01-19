@@ -29,6 +29,12 @@ function update_room(event) {
             return
         }
     }
+
+    student_list.forEach(s => {
+        s.r = -1
+        s.c = -1
+    })
+
     document.getElementById("arranging-area").innerHTML = "" // Clear the arranging area
     console.log("Recreating table")
 
