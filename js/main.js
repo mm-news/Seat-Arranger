@@ -301,13 +301,11 @@ function seat_card_dragover_handler(ev) {
  * @param {Event} ev the drop event
  */
 function seat_card_drop_handler(ev) {
-    // TODO: limit the number of students in the same seat
     console.log("drop: ", ev.dataTransfer.getData("text/plain"))
     console.log("target: ", ev.target.id)
     ev.preventDefault()
 
     let student_id = ev.dataTransfer.getData("text/plain")
-    let seat_card = document.getElementById(ev.target.id)
 
     let student = student_list.find(s => s.id == student_id)
     if (!student) {
@@ -324,13 +322,28 @@ function seat_card_drop_handler(ev) {
         }
     }
 
+    /** @type {HTMLElement} seat_card */
+    let seat_card = ev.target.tagName == "DIV" ? ev.target : ev.target.parentElement
+
+    let r = parseInt(seat_card.getAttribute("data-seat-row"))
+    let c = parseInt(seat_card.getAttribute("data-seat-col"))
+
+    if (student_list.some(s => s.r == r && s.c == c)) {
+        student_list.filter(s => s.r == r && s.c == c).forEach(s => {
+            s.r = -1
+            s.c = -1
+        })
+        seat_card.innerHTML = ""
+    }
+
     seat_card.setAttribute("data-student-id", student_id)
     seat_card.addEventListener("click", () => show_student_preferences(student_id))
+
     // TODO: Add event listener to show seat preferences
     seat_card.appendChild(seat_card_content(student_id))
 
-    student.r = parseInt(seat_card.getAttribute("data-seat-row"))
-    student.c = parseInt(seat_card.getAttribute("data-seat-col"))
+    student.r = r
+    student.c = c
     flush_student_cards()
 }
 
