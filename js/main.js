@@ -63,6 +63,7 @@ function update_room(event) {
     }
 
     document.getElementById("arranging-area").innerHTML = new_arranging_area.innerHTML
+    flush_student_cards()
 }
 
 
