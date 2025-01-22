@@ -304,6 +304,24 @@ function seat_card_dragover_handler(ev) {
 }
 
 /**
+ * Handles the drag event on the seat card.
+ * @param {Event} ev the drag event.
+ * @returns 
+ */
+function seat_card_dragstart_handler(ev) {
+    if (!ev.target.classList.contains("seat-card")) {
+        return
+    }
+    console.log("drag start: ", ev.target.getAttribute("data-student-id"))
+
+    let student_id = document.getElementById(ev.target.id).querySelector("h1").textContent
+
+    ev.dataTransfer.setData("text/plain", student_id)
+    ev.dataTransfer.setData("text/source", ev.target.id)
+    ev.dataTransfer.dropEffect = "move"
+}
+
+/**
  * The is called when the drop event is triggered on the seat card.
  * @param {Event} ev the drop event
  */
@@ -348,10 +366,13 @@ function seat_card_drop_handler(ev) {
 
     // TODO: Add event listener to show seat preferences
     seat_card.appendChild(seat_card_content(student_id))
+    seat_card.setAttribute("draggable", "true")
+    seat_card.addEventListener("dragstart", seat_card_dragstart_handler)
 
     student.r = r
     student.c = c
     flush_student_cards()
+    // TODO: Set replace / swap mode.
 }
 
 /**
