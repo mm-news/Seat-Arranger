@@ -10,7 +10,8 @@ how to make the best arrangement of the seats in a classroom, so no student will
 - [x] Let user customize the students' preferences
 - [x] Let user set the number of rows and columns
 - [x] Drag & Drop to arrange the seats
-- [ ] Check available seats for a student and show the result
+- [x] Check available seats for a student and show the result
+- [ ] Store the students' preferences in the local storage
 - [ ] Set student display name
 - [ ] Spread the javascript code into multiple files
 - [ ] Make the site responsive
