@@ -444,6 +444,18 @@ function seat_check(student) {
     return unavailable_seats
 }
 
+function show_unavailable_seats(student) {
+    let unavailable_seats = seat_check(student)
+    unavailable_seats.forEach(s => {
+        let seat_card = document.getElementById(`seat-${s[0]}-${s[1]}`)
+        seat_card.classList.add("bg-danger")
+    })
+}
+
+function hide_unavailable_seats() {
+    document.querySelectorAll(".bg-danger").forEach(e => e.classList.remove("bg-danger"))
+}
+
 function array_eq(a, b) {
     return a.length === b.length && a.every((v, i) => v === b[i])
 }
