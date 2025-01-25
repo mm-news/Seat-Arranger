@@ -96,6 +96,8 @@ class Student {
         card.setAttribute("draggable", "true")
         card.addEventListener("click", () => show_student_preferences(this.id))
         card.addEventListener("dragstart", student_card_dragstart_handler)
+        card.addEventListener("dragstart", () => show_unavailable_seats(this))
+        card.addEventListener("dragend", hide_unavailable_seats)
 
         let card_body = document.createElement("div")
         card_body.classList.add("card-body")
@@ -183,7 +185,7 @@ function show_student_preferences(id) {
             })
             student.avoid = avoid
             student.avoid_plus = avoid_plus
-            console.log("Updated student: ", student)
+            console.info("Updated student: ", student)
             flush_student_cards()
         })
 
@@ -326,8 +328,8 @@ function seat_card_dragstart_handler(ev) {
  * @param {Event} ev the drop event
  */
 function seat_card_drop_handler(ev) {
-    console.log("drop: ", ev.dataTransfer.getData("text/plain"))
-    console.log("target: ", ev.target.id)
+    console.info("drop: ", ev.dataTransfer.getData("text/plain"))
+    console.info("target: ", ev.target.id)
     ev.preventDefault()
 
     let student_id = ev.dataTransfer.getData("text/plain")
@@ -368,6 +370,8 @@ function seat_card_drop_handler(ev) {
     seat_card.appendChild(seat_card_content(student_id))
     seat_card.setAttribute("draggable", "true")
     seat_card.addEventListener("dragstart", seat_card_dragstart_handler)
+    seat_card.addEventListener("dragstart", () => show_unavailable_seats(student))
+    seat_card.addEventListener("dragend", hide_unavailable_seats)
 
     student.r = r
     student.c = c
@@ -396,6 +400,9 @@ function seat_check(student) {
     let avoid = student.avoid
     let avoid_plus = student.avoid_plus
 
+    let max_rows = parseInt(document.getElementById("room-row").value)
+    let max_cols = parseInt(document.getElementById("room-col").value)
+
     let unavailable_seats = []
 
     student_list.forEach(s => {
@@ -415,11 +422,13 @@ function seat_check(student) {
             ["x", "y"].forEach(axis => {
                 [-1, 1].forEach(delta => {
                     let [r, c] = add_delta(axis, delta, s.r, s.c)
-                    if (!(unavailable_seats
-                        .some(function (s) { return array_eq(s, [r, c]) }))
-                        && r > 0 && c > 0) {
-                        unavailable_seats.push([r, c])
+                    if (unavailable_seats
+                        .some(function (s) { return array_eq(s, [r, c]) })
+                        || r <= 0 || c <= 0
+                        || r > max_rows || c > max_cols) {
+                        return
                     }
+                    unavailable_seats.push([r, c])
                 })
             })
         }
@@ -430,7 +439,7 @@ function seat_check(student) {
         if (s.r > 0 && s.c > 0) {
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
-                    if ((i == 0 && j == 0) || (s.r + i) <= 0 || (s.c + j) <= 0) {
+                    if ((i == 0 && j == 0) || (s.r + i) <= 0 || (s.c + j) <= 0 || (s.r + i) > max_rows || (s.c + j) > max_cols) {
                         continue
                     }
                     unavailable_seats.some(
@@ -445,6 +454,7 @@ function seat_check(student) {
 }
 
 function show_unavailable_seats(student) {
+    hide_unavailable_seats()
     let unavailable_seats = seat_check(student)
     unavailable_seats.forEach(s => {
         let seat_card = document.getElementById(`seat-${s[0]}-${s[1]}`)
