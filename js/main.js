@@ -386,3 +386,64 @@ function seat_card_content(student_id) {
     title.classList.add("text-center", "center-text")
     return title
 }
+
+// Seat check
+/**
+ * Check the available seat for a student.
+ * @param {Student} student the student to check the seat for
+ */
+function seat_check(student) {
+    let avoid = student.avoid
+    let avoid_plus = student.avoid_plus
+
+    let unavailable_seats = []
+
+    student_list.forEach(s => {
+        if (s.id == student.id) {
+            return
+        }
+        s.r > 0 && s.c > 0 ? unavailable_seats.push([s.r, s.c]) : null
+    })
+
+    avoid.forEach(id => {
+        let s = student_list.find(s => s.id == id)
+        if (s.r > 0 && s.c > 0) {
+            let add_delta = (axis, delta, r, c) => {
+                return axis == "x" ? [r, c + delta] : [r + delta, c]
+            }
+
+            ["x", "y"].forEach(axis => {
+                [-1, 1].forEach(delta => {
+                    let [r, c] = add_delta(axis, delta, s.r, s.c)
+                    if (!(unavailable_seats
+                        .some(function (s) { return array_eq(s, [r, c]) }))
+                        && r > 0 && c > 0) {
+                        unavailable_seats.push([r, c])
+                    }
+                })
+            })
+        }
+    })
+
+    avoid_plus.forEach(id => {
+        let s = student_list.find(s => s.id == id)
+        if (s.r > 0 && s.c > 0) {
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if ((i == 0 && j == 0) || (s.r + i) <= 0 || (s.c + j) <= 0) {
+                        continue
+                    }
+                    unavailable_seats.some(
+                        function (arr) { return array_eq(arr, [s.r + i, s.c + j]) }
+                    ) ? null : unavailable_seats.push([s.r + i, s.c + j])
+                }
+            }
+        }
+    })
+
+    return unavailable_seats
+}
+
+function array_eq(a, b) {
+    return a.length === b.length && a.every((v, i) => v === b[i])
+}
