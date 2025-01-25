@@ -57,6 +57,7 @@ function update_room(event) {
             c.setAttribute("id", "seat-" + i + "-" + j)
             c.setAttribute("data-seat-row", i)
             c.setAttribute("data-seat-col", j)
+            c.setAttribute("onclick", `show_seat_preferences(${i}, ${j})`)
             c.setAttribute("ondragover", "seat_card_dragover_handler(event)") // Why not addEventListener?
             c.setAttribute("ondrop", "seat_card_drop_handler(event)") // Because it doesn't work :)
             r.appendChild(c)
@@ -307,6 +308,44 @@ function get_thead_4_avoid() {
     return thead
 }
 
+// Seat Info
+
+function show_seat_preferences(r, c) {
+    let seat_box = document.getElementById("seat-info")
+    seat_box.innerHTML = ""
+
+    let cardbody = document.createElement("div")
+    cardbody.classList.add("card-body")
+
+    let card_title = document.createElement("h5")
+    card_title.classList.add("card-title")
+    card_title.textContent = "Seat R" + r + "C" + c
+
+    let set_disabled_area = document.createElement("div")
+    set_disabled_area.classList.add("form-check", "form-switch")
+
+    let set_disabled_checkbox = document.createElement("input")
+    set_disabled_checkbox.classList.add("form-check-input")
+    set_disabled_checkbox.setAttribute("type", "checkbox")
+    set_disabled_checkbox.setAttribute("role", "switch")
+    set_disabled_checkbox.setAttribute("id", "set-seat-disabled")
+    set_disabled_checkbox.setAttribute("aria-checked", "false") // TODO: Change this to true if the seat is disabled
+    // TODO: Add event listener to update the seat settings
+
+    let set_disabled_label = document.createElement("label")
+    set_disabled_label.classList.add("form-check-label")
+    set_disabled_label.setAttribute("for", "set-seat-disabled")
+    set_disabled_label.textContent = "Seat Disabled"
+
+    set_disabled_area.appendChild(set_disabled_checkbox)
+    set_disabled_area.appendChild(set_disabled_label)
+
+    cardbody.appendChild(card_title)
+    cardbody.appendChild(set_disabled_area)
+
+    seat_box.appendChild(cardbody)
+}
+
 // Drag and Drop
 
 /**
@@ -389,7 +428,6 @@ function seat_card_drop_handler(ev) {
     seat_card.setAttribute("data-student-id", student_id)
     seat_card.addEventListener("click", () => show_student_preferences(student_id))
 
-    // TODO: Add event listener to show seat preferences
     seat_card.appendChild(seat_card_content(student))
     seat_card.setAttribute("draggable", "true")
     seat_card.addEventListener("dragstart", seat_card_dragstart_handler)
