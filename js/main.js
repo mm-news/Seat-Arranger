@@ -81,13 +81,15 @@ class Student {
      * @param {Number} c The column number of the student's seat; 1-indexed; -1 for unassigned.
      * @param {Array<Number>} avoid The list of student IDs to avoid in the + area (4 seats).
      * @param {Array<Number>} avoid_plus The list of student IDs to avoid in the # area (8 seats).
+     * @param {String} display_name The name to display on the card.
      */
-    constructor(id, r, c, avoid, avoid_plus) {
+    constructor(id, r, c, avoid, avoid_plus, display_name) {
         this.id = id
         this.r = r
         this.c = c
         this.avoid = avoid
         this.avoid_plus = avoid_plus
+        this.display_name = display_name
     }
 
     get card() {
@@ -106,7 +108,7 @@ class Student {
 
         let card_title = document.createElement("h5")
         card_title.classList.add("card-title")
-        card_title.textContent = "Student #" + this.id
+        card_title.textContent = this.display_name ? `${this.display_name} (#${this.id})` : "Student #" + this.id
         card_body.appendChild(card_title)
 
         let card_subtitle = document.createElement("h6")
