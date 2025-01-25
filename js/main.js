@@ -1,3 +1,5 @@
+// FIXME: Error occurs when the seat is dragged to the same seat.
+
 // Setup
 
 document.getElementById("set-room-size-btn").addEventListener("click", update_room)
@@ -154,7 +156,7 @@ function flush_student_cards() {
 function show_student_preferences(id) {
     let student = student_list.find(s => s.id == id)
     if (student) {
-        let info_box = document.getElementById("student-info") // TODO: Set the class of the student `bg-primary`
+        let info_box = document.getElementById("student-info")
         info_box.innerHTML = ""
 
         let cardbody = document.createElement("div")
@@ -164,12 +166,7 @@ function show_student_preferences(id) {
         title.classList.add("card-title")
         title.textContent = "Student #" + student.id
 
-        let configure_avoid = generate_student_avoid_form(student)
-
-        let save_button = document.createElement("button")
-        save_button.classList.add("btn", "btn-primary")
-        save_button.textContent = "Save"
-        save_button.addEventListener("click", (e) => {
+        let update_when_changed = () => {
             let avoid = []
             let avoid_plus = []
             student_list.forEach(s => {
@@ -187,11 +184,12 @@ function show_student_preferences(id) {
             student.avoid_plus = avoid_plus
             console.info("Updated student: ", student)
             flush_student_cards()
-        })
+        }
+
+        let configure_avoid = generate_student_avoid_form(student, update_when_changed)
 
         cardbody.appendChild(title)
         cardbody.appendChild(configure_avoid)
-        cardbody.appendChild(save_button)
         info_box.appendChild(cardbody)
     } else {
         console.error("Student not found: ", id)
@@ -201,8 +199,9 @@ function show_student_preferences(id) {
 /**
  * Generate a form to set the avoid list for a student.
  * @param {Student} student_id the ID of the student to generate the form for
+ * @param {Function} update_function the function to call when the form is updated
  */
-function generate_student_avoid_form(student) {
+function generate_student_avoid_form(student, update_function) {
 
     let set_avoid = document.createElement("table")
     set_avoid.setAttribute("id", "set-avoid")
@@ -230,6 +229,8 @@ function generate_student_avoid_form(student) {
             }
         })
 
+        student_avoid_checkbox.addEventListener("change", update_function)
+
         if (student.avoid.includes(s.id)) {
             student_avoid_checkbox.setAttribute("checked", "")
         }
@@ -245,6 +246,8 @@ function generate_student_avoid_form(student) {
                 document.getElementById("avoid-student-" + s.id).checked = false
             }
         })
+
+        student_avoid_plus_checkbox.addEventListener("change", update_function)
 
         if (student.avoid_plus.includes(s.id)) {
             student_avoid_plus_checkbox.setAttribute("checked", "")
