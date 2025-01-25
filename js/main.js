@@ -164,9 +164,27 @@ function show_student_preferences(id) {
         let cardbody = document.createElement("div")
         cardbody.classList.add("card-body")
 
-        let title = document.createElement("h5")
-        title.classList.add("card-title")
-        title.textContent = "Student #" + student.id
+        let set_display_name_area = document.createElement("div")
+        set_display_name_area.classList.add("form-floating")
+
+        let set_display_name_box = document.createElement("input")
+        set_display_name_box.classList.add("form-control")
+        set_display_name_box.setAttribute("type", "text")
+        set_display_name_box.setAttribute("id", "set-display-name")
+        set_display_name_box.setAttribute("placeholder", "Display Name")
+        set_display_name_box.setAttribute("value", student.display_name ? student.display_name : id)
+        set_display_name_box.addEventListener("change", () => {
+            student.display_name = set_display_name_box.value
+            show_student_preferences(id)
+            flush_student_cards()
+        })
+
+        let set_display_name_label = document.createElement("label")
+        set_display_name_label.setAttribute("for", "set-display-name")
+        set_display_name_label.textContent = "display name"
+
+        set_display_name_area.appendChild(set_display_name_box)
+        set_display_name_area.appendChild(set_display_name_label)
 
         let update_when_changed = () => {
             let avoid = []
@@ -190,7 +208,7 @@ function show_student_preferences(id) {
 
         let configure_avoid = generate_student_avoid_form(student, update_when_changed)
 
-        cardbody.appendChild(title)
+        cardbody.appendChild(set_display_name_area)
         cardbody.appendChild(configure_avoid)
         info_box.appendChild(cardbody)
     } else {
