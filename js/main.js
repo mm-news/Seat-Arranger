@@ -22,7 +22,7 @@ var student_list = []
  * @param {Event} event - The event object.
  */
 function update_room(event) {
-    //TODO: Move items back to the students list
+    //TODO: Only clear necessary seats
     console.log("Updating room layout")
     if (event) {
         if (!confirm("This is gonna clear all your seats, are you sure?")) {
