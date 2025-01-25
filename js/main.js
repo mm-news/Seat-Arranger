@@ -275,7 +275,7 @@ function generate_student_avoid_form(student, update_function) {
 
         let th = document.createElement("th")
         th.setAttribute("scope", "row")
-        th.textContent = "#" + s.id
+        th.textContent = s.display_name ? s.display_name : "#" + s.id
 
         let td_avoid = document.createElement("td")
         td_avoid.appendChild(student_avoid_checkbox)
@@ -339,7 +339,7 @@ function seat_card_dragstart_handler(ev) {
     }
     console.log("drag start: ", ev.target.getAttribute("data-student-id"))
 
-    let student_id = document.getElementById(ev.target.id).querySelector("h1").textContent
+    let student_id = document.getElementById(ev.target.id).querySelector("h1").getAttribute("data-student-id")
 
     ev.dataTransfer.setData("text/plain", student_id)
     ev.dataTransfer.setData("text/source", ev.target.id)
@@ -390,7 +390,7 @@ function seat_card_drop_handler(ev) {
     seat_card.addEventListener("click", () => show_student_preferences(student_id))
 
     // TODO: Add event listener to show seat preferences
-    seat_card.appendChild(seat_card_content(student_id))
+    seat_card.appendChild(seat_card_content(student))
     seat_card.setAttribute("draggable", "true")
     seat_card.addEventListener("dragstart", seat_card_dragstart_handler)
     seat_card.addEventListener("dragstart", () => show_unavailable_seats(student))
@@ -404,13 +404,14 @@ function seat_card_drop_handler(ev) {
 
 /**
  * Returns the content of the seat card.
- * @param {Number} student_id the target student ID
+ * @param {Student} student the target student ID
  * @returns {HTMLElement} the content of the seat card
  */
-function seat_card_content(student_id) {
+function seat_card_content(student) {
     let title = document.createElement("h1")
-    title.textContent = student_id
+    title.textContent = student.display_name ? student.display_name : student.id
     title.classList.add("text-center", "center-text")
+    title.setAttribute("data-student-id", student.id)
     return title
 }
 
