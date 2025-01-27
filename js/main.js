@@ -329,8 +329,9 @@ function show_seat_preferences(r, c) {
     set_disabled_checkbox.setAttribute("type", "checkbox")
     set_disabled_checkbox.setAttribute("role", "switch")
     set_disabled_checkbox.setAttribute("id", "set-seat-disabled")
-    set_disabled_checkbox.setAttribute("aria-checked", "false") // TODO: Change this to true if the seat is disabled
-    // TODO: Add event listener to update the seat settings
+    let check = document.getElementById("seat-" + r + "-" + c).classList.contains("card-disabled") ? "true" : "false"
+    set_disabled_checkbox.setAttribute("aria-checked", check)
+    set_disabled_checkbox.addEventListener("change", () => set_disabled(r, c, set_disabled_checkbox.checked))
 
     let set_disabled_label = document.createElement("label")
     set_disabled_label.classList.add("form-check-label")
@@ -346,6 +347,35 @@ function show_seat_preferences(r, c) {
     seat_box.appendChild(cardbody)
 }
 
+/**
+ * Set the seat to disabled or enabled
+ * @param {Number} r the row number of the seat
+ * @param {Number} c the column number of the seat
+ * @param {Boolean} disabled whether the seat is disabled or not
+ */
+function set_disabled(r, c, disabled) {
+    let seat_card = document.getElementById("seat-" + r + "-" + c)
+
+    if (disabled) {
+        seat_card.classList.add("bg-secondary", "card-disabled")
+        seat_card.setAttribute("draggable", "false")
+        if (seat_card.innerHTML) {
+            if (seat_card.querySelector("h1").getAttribute("data-student-id")) {
+                let student_id = seat_card.querySelector("h1").getAttribute("data-student-id")
+                let student = student_list.find(s => s.id == student_id)
+                student.r = -1
+                student.c = -1
+                flush_student_cards()
+            }
+            seat_card.innerHTML = ""
+        }
+    } else {
+        seat_card.classList.remove("bg-secondary", "card-disabled")
+        seat_card.removeAttribute("disabled")
+        seat_card.setAttribute("draggable", "true")
+    }
+}
+
 // Drag and Drop
 
 /**
@@ -355,6 +385,8 @@ function show_seat_preferences(r, c) {
 function student_card_dragstart_handler(ev) {
     if (!ev.target.classList.contains("student-card")) {
         return
+    } else if (ev.target.classList.contains("card-disabled")) {
+        return
     }
     console.log("drag start: ", ev.target.getAttribute("data-student-id"))
 
@@ -363,6 +395,9 @@ function student_card_dragstart_handler(ev) {
 }
 
 function seat_card_dragover_handler(ev) {
+    if (ev.target.classList.contains("card-disabled")) {
+        return
+    }
     ev.preventDefault()
     ev.dataTransfer.dropEffect = "link"
 }
@@ -374,6 +409,8 @@ function seat_card_dragover_handler(ev) {
  */
 function seat_card_dragstart_handler(ev) {
     if (!ev.target.classList.contains("seat-card")) {
+        return
+    } else if (ev.target.classList.contains("card-disabled")) {
         return
     }
     console.log("drag start: ", ev.target.getAttribute("data-student-id"))
@@ -390,6 +427,9 @@ function seat_card_dragstart_handler(ev) {
  * @param {Event} ev the drop event
  */
 function seat_card_drop_handler(ev) {
+    if (ev.target.classList.contains("card-disabled")) {
+        return
+    }
     console.info("drop: ", ev.dataTransfer.getData("text/plain"))
     console.info("target: ", ev.target.id)
     ev.preventDefault()
