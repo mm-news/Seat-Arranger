@@ -5,7 +5,7 @@ how to make the best arrangement of the seats in a classroom, so no student will
 
 ## How to use
 
-1. Open [the site] (<https://mm-news.github.io/Seat-Arranger/index.html>)
+1. Open [the site] (https://mm-news.github.io/Seat-Arranger/index.html)
 2. Adjust the room size if needed.
 3. Add students by clicking the `Add Student` button on the right.
 4. Set the students' preferences by clicking the student's card.
