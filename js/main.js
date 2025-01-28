@@ -446,6 +446,7 @@ function seat_card_drop_handler(ev) {
         let old_seat_card = document.getElementById("seat-" + student.r + "-" + student.c)
         if (old_seat_card) {
             old_seat_card.innerHTML = ""
+            old_seat_card.setAttribute("data-student-id", "") // TODO: Remove the event listener
         } else {
             console.error("Old seat card not found: ", student.r, student.c)
         }
@@ -490,6 +491,20 @@ function seat_card_content(student) {
     title.textContent = student.display_name ? student.display_name : student.id
     title.classList.add("text-center", "center-text")
     title.setAttribute("data-student-id", student.id)
+
+    let remove_button_span = document.createElement("sup")
+    remove_button_span.classList.add("remove-button", "fs-6")
+    remove_button_span.role = "button"
+    remove_button_span.textContent = "[x]"
+    remove_button_span.addEventListener("click", () => {
+        document.getElementById(`seat-${student.r}-${student.c}`).innerHTML = "" // FIXME: The height goes wrong
+        student.r = -1
+        student.c = -1
+        flush_student_cards()
+    })
+
+    title.appendChild(remove_button_span)
+
     return title
 }
 
