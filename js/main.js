@@ -15,11 +15,6 @@ document.getElementById("room-row").setAttribute("value", 6)
 document.getElementById("room-col").setAttribute("value", 5)
 document.getElementById("students-count").setAttribute("value", 5)
 
-// Pre-set 5 students
-for (let i = 1; i <= 5; i++) {
-    add_student(i)
-}
-
 /** @type {Array<Student>} */
 var student_list = []
 
