@@ -9,6 +9,10 @@ document.getElementById("set-students-count-btn").addEventListener("click", () =
         add_student(current_count + i + 1)
     }
 })
+document.getElementById("save-data-btn").addEventListener("click", saveData)
+document.getElementById("delete-data-btn").addEventListener("click", deleteData)
+
+document.addEventListener("DOMContentLoaded", restoreData)
 
 // Pre-set control values
 document.getElementById("room-row").setAttribute("value", 6)
@@ -586,4 +590,77 @@ function hide_unavailable_seats() {
 
 function array_eq(a, b) {
     return a.length === b.length && a.every((v, i) => v === b[i])
+}
+
+function saveData() {
+    // Save students data
+    student_list.forEach(student => {
+        localStorage.setItem(`std-${student.id}`, JSON.stringify(student))
+    })
+
+    // Save seats data
+    const rows = parseInt(document.getElementById("room-row").value)
+    const cols = parseInt(document.getElementById("room-col").value)
+    for (let i = 1; i <= rows; i++) {
+        for (let j = 1; j <= cols; j++) {
+            const seatCard = document.getElementById(`seat-${i}-${j}`)
+            const seatData = {
+                id: `seat-${i}-${j}`,
+                disabled: seatCard.classList.contains("card-disabled")
+            }
+            localStorage.setItem(seatData.id, JSON.stringify(seatData))
+        }
+    }
+}
+
+function deleteData() {
+    localStorage.clear()
+    location.reload()
+}
+
+function restoreData() {
+    // Clear students list
+    student_list = []
+
+    // Restore students and seats data
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key.startsWith("std-")) {
+            const studentData = JSON.parse(localStorage.getItem(key))
+            const student = new Student(
+                studentData.id,
+                studentData.r,
+                studentData.c,
+                studentData.avoid,
+                studentData.avoid_plus,
+                studentData.display_name
+            )
+            student_list.push(student)
+        } else if (key.startsWith("seat-")) {
+            const seatData = JSON.parse(localStorage.getItem(key))
+            if (seatData && seatData.disabled) {
+                const [_, r, c] = key.split("-")
+                set_disabled(parseInt(r), parseInt(c), true)
+            }
+        }
+    }
+
+    // Sort students by id
+    student_list.sort((a, b) => a.id - b.id)
+
+    // Put students back to their seats
+    student_list.forEach(student => {
+        if (student.r > 0 && student.c > 0) {
+            const seatCard = document.getElementById(`seat-${student.r}-${student.c}`)
+            seatCard.setAttribute("data-student-id", student.id)
+            seatCard.addEventListener("click", () => show_student_preferences(student.id))
+            seatCard.appendChild(seat_card_content(student))
+            seatCard.setAttribute("draggable", "true")
+            seatCard.addEventListener("dragstart", seat_card_dragstart_handler)
+            seatCard.addEventListener("dragstart", () => show_unavailable_seats(student))
+            seatCard.addEventListener("dragend", hide_unavailable_seats)
+        }
+    })
+
+    flush_student_cards()
 }

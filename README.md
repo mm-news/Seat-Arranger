@@ -10,7 +10,9 @@ how to make the best arrangement of the seats in a classroom, so no student will
 3. Add students by clicking the `Add Student` button on the right.
 4. Set the students' preferences by clicking the student's card.
 5. Drag and drop the students' cards to arrange the seats.
-6. Enjoy!
+6. Save the students and seats information by clicking the `Save Data` button.
+7. Delete the saved data by clicking the `Delete Data` button.
+8. Enjoy!
 
 ## TODOS
 
@@ -20,7 +22,7 @@ how to make the best arrangement of the seats in a classroom, so no student will
 - [x] Let user set the number of rows and columns
 - [x] Drag & Drop to arrange the seats
 - [x] Check available seats for a student and show the result
-- [ ] Store the students' preferences in the local storage
+- [x] Store the students' preferences in the local storage
 - [x] Set student display name
 - [ ] Spread the javascript code into multiple files
 - [ ] Make the site responsive
