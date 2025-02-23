@@ -662,5 +662,16 @@ function restoreData() {
         }
     })
 
+    if (student_list.length == 0) {
+        preset_students(5)
+    }
+
     flush_student_cards()
+}
+
+// Pre-set 5 students
+function preset_students(count) {
+    for (let i = 1; i <= count; i++) {
+        add_student(i);
+    }
 }
