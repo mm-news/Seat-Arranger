@@ -614,6 +614,9 @@ function saveData() {
 }
 
 function deleteData() {
+    if (!confirm("This is gonna clear all your seats, are you sure?")) {
+        return
+    }
     localStorage.clear()
     location.reload()
 }
