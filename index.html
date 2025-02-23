@@ -38,7 +38,12 @@
 
         #students-list {
             max-height: 50vh;
-            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        #student-info {
+            max-height: 35vh;
+            overflow-y: scroll;
         }
     </style>
     <title>Seat Arranger</title>
@@ -79,6 +84,7 @@
                     <div class="col">
                         <h3>Student info</h3>
                         <div id="student-info" class="card"></div>
+                        <!--TODO: Make them scrollable if there's too much content-->
                     </div>
                 </div>
             </div>
