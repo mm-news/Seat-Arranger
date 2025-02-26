@@ -135,6 +135,24 @@ class Student {
         card.appendChild(card_body)
         return card
     }
+
+    update_avoid_lists() {
+        student_list.forEach(s => {
+            if (s.id !== this.id) {
+                if (this.avoid.includes(s.id) && !s.avoid.includes(this.id)) {
+                    s.avoid.push(this.id)
+                } else if (!this.avoid.includes(s.id) && s.avoid.includes(this.id)) {
+                    s.avoid = s.avoid.filter(id => id !== this.id)
+                }
+
+                if (this.avoid_plus.includes(s.id) && !s.avoid_plus.includes(this.id)) {
+                    s.avoid_plus.push(this.id)
+                } else if (!this.avoid_plus.includes(s.id) && s.avoid_plus.includes(this.id)) {
+                    s.avoid_plus = s.avoid_plus.filter(id => id !== this.id)
+                }
+            }
+        })
+    }
 }
 
 function add_student(id) {
@@ -199,7 +217,7 @@ function show_student_preferences(id) {
                 if (s.id == student.id) {
                     return
                 }
-                if (document.getElementById("avoid-student-" + s.id).checked) { //TODO: mirror the avoid and avoid_plus between the students
+                if (document.getElementById("avoid-student-" + s.id).checked) {
                     avoid.push(s.id)
                 }
                 if (document.getElementById("avoid-plus-student-" + s.id).checked) {
@@ -208,6 +226,7 @@ function show_student_preferences(id) {
             })
             student.avoid = avoid
             student.avoid_plus = avoid_plus
+            student.update_avoid_lists()
             console.info("Updated student: ", student)
             flush_student_cards()
         }
