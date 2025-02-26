@@ -199,7 +199,7 @@ function show_student_preferences(id) {
                 if (s.id == student.id) {
                     return
                 }
-                if (document.getElementById("avoid-student-" + s.id).checked) {
+                if (document.getElementById("avoid-student-" + s.id).checked) { //TODO: mirror the avoid and avoid_plus between the students
                     avoid.push(s.id)
                 }
                 if (document.getElementById("avoid-plus-student-" + s.id).checked) {
