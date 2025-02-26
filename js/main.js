@@ -531,7 +531,9 @@ function seat_check(student) {
         if (s.id == student.id) {
             return
         }
-        s.r > 0 && s.c > 0 ? unavailable_seats.push([s.r, s.c]) : null
+        if (avoid.includes(s.id) || avoid_plus.includes(s.id)) {
+            s.r > 0 && s.c > 0 ? unavailable_seats.push([s.r, s.c]) : null
+        }
     })
 
     avoid.forEach(id => {
