@@ -156,6 +156,11 @@ class Student {
                 } else if (!this.avoid_plus.includes(s.id) && s.avoid_plus.includes(this.id)) {
                     s.avoid_plus = s.avoid_plus.filter(id => id !== this.id)
                 }
+
+                this.avoid.sort((a, b) => a - b)
+                this.avoid_plus.sort((a, b) => a - b)
+                s.avoid.sort((a, b) => a - b)
+                s.avoid_plus.sort((a, b) => a - b)
             }
         })
     }
