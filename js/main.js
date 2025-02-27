@@ -124,12 +124,18 @@ class Student {
 
         let card_text_A = document.createElement("p")
         card_text_A.classList.add("card-text")
-        card_text_A.textContent = "Avoid: " + this.avoid.join(", ")
+
+        let avoid_text = this.avoid.map(id => student_list.find(s => s.id == id).display_name ? student_list.find(s => s.id == id).display_name : "#" + id).join(", ")
+
+        card_text_A.textContent = "Avoid: " + avoid_text
         card_body.appendChild(card_text_A)
 
         let card_text_B = document.createElement("p")
         card_text_B.classList.add("card-text")
-        card_text_B.textContent = "Avoid Plus: " + this.avoid_plus.join(", ")
+
+        let avoid_plus_text = this.avoid_plus.map(id => student_list.find(s => s.id == id).display_name ? student_list.find(s => s.id == id).display_name : "#" + id).join(", ")
+
+        card_text_B.textContent = "Avoid Plus: " + avoid_plus_text
         card_body.appendChild(card_text_B)
 
         card.appendChild(card_body)
