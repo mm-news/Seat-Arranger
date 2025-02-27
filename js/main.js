@@ -607,6 +607,9 @@ function show_unavailable_seats(student) {
     let unavailable_seats = seat_check(student)
     unavailable_seats.forEach(s => {
         let seat_card = document.getElementById(`seat-${s[0]}-${s[1]}`)
+        if (seat_card.classList.contains("card-disabled")) {
+            return
+        }
         seat_card.classList.add("bg-danger")
     })
 }
