@@ -639,9 +639,14 @@ function saveData() {
         localStorage.setItem(`std-${student.id}`, JSON.stringify(student))
     })
 
-    // Save seats data
+    // Save room data
     const rows = parseInt(document.getElementById("room-row").value)
     const cols = parseInt(document.getElementById("room-col").value)
+
+    localStorage.setItem("room-rows", rows)
+    localStorage.setItem("room-cols", cols)
+
+    // Save seats data
     for (let i = 1; i <= rows; i++) {
         for (let j = 1; j <= cols; j++) {
             const seatCard = document.getElementById(`seat-${i}-${j}`)
@@ -665,6 +670,16 @@ function deleteData() {
 function restoreData() {
     // Clear students list
     student_list = []
+
+    // Restore room data
+    const rows = localStorage.getItem("room-rows")
+    const cols = localStorage.getItem("room-cols")
+
+    if (rows && cols) {
+        document.getElementById("room-row").setAttribute("value", rows)
+        document.getElementById("room-col").setAttribute("value", cols)
+    }
+    update_room()
 
     // Restore students and seats data
     for (let i = 0; i < localStorage.length; i++) {
