@@ -639,9 +639,14 @@ function saveData() {
         localStorage.setItem(`std-${student.id}`, JSON.stringify(student))
     })
 
-    // Save seats data
+    // Save room data
     const rows = parseInt(document.getElementById("room-row").value)
     const cols = parseInt(document.getElementById("room-col").value)
+
+    localStorage.setItem("room-rows", rows)
+    localStorage.setItem("room-cols", cols)
+
+    // Save seats data
     for (let i = 1; i <= rows; i++) {
         for (let j = 1; j <= cols; j++) {
             const seatCard = document.getElementById(`seat-${i}-${j}`)
