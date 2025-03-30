@@ -173,6 +173,11 @@ class Student {
 }
 
 function add_student(id) {
+    // Check if the id is already taken
+    if (student_list.find(s => s.id == id)) {
+        console.error(`Student ID ${id} already exists.`)
+        throw new Error(`Student ID: ${id} already exists.`);
+    }
     let student = new Student(id, -1, -1, [], [])
     student_list.push(student)
     flush_student_cards()
