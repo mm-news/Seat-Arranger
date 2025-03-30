@@ -335,8 +335,9 @@ function generate_student_avoid_form(student, update_function) {
         checkbox_row.appendChild(td_avoid_plus)
 
         table_body.appendChild(checkbox_row)
-        set_avoid.appendChild(table_body)
     })
+    
+    set_avoid.appendChild(table_body)
     return set_avoid
 }
 
